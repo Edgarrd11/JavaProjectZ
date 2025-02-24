@@ -1,0 +1,80 @@
+@startuml
+class User {
+    -int id
+    -String username
+    -String password
+    -String role
+
+    +int getId()
+    +void setId(int id)
+    +String getUsername()
+    +void setUsername(String username)
+    +String getPassword()
+    +void setPassword(String password)
+    +String getRole()
+    +void setRole(String role)
+
+    +void register()
+    +void login()
+    +void logout()
+    +void updateProfile()
+}
+
+class Loan {
+    -int id
+    -int user_id
+    -double amount
+    -String loan_type
+    -String status
+    -Date created_at
+
+    +int getId()
+    +void setId(int id)
+    +int getUserId()
+    +void setUserId(int user_id)
+    +double getAmount()
+    +void setAmount(double amount)
+    +String getLoanType()
+    +void setLoanType(String loan_type)
+    +String getStatus()
+    +void setStatus(String status)
+    +Date getCreatedAt()
+    +void setCreatedAt(Date created_at)
+
+    +void createLoan()
+    +void updateLoan()
+    +void approveLoan()
+    +void rejectLoan()
+}
+
+class AuthController {
+    +void register()
+    +void login()
+    +void logout()
+}
+
+class UserController {
+    +void getUserProfile()
+    +void updateUserProfile()
+}
+
+class LoanController {
+    +void createLoan()
+    +void getLoans()
+    +void approveLoan()
+    +void rejectLoan()
+}
+
+class Database {
+    +void connect()
+    +void query()
+}
+
+' Relationships with cardinality
+User "1" -- "*" Loan : has > (1:M Association)
+AuthController --> User : manages (1:1 Dependency)
+UserController --> User : manages (1:1 Dependency)
+LoanController --> Loan : manages (1:1 Dependency)
+Database --> User : stores (1:M Dependency)
+Database --> Loan : stores (1:M Dependency)
+@enduml
