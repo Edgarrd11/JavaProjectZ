@@ -1,5 +1,5 @@
 ## **Iteration 1 (Project 0) — Loan Management System**
-
+Author: Edgar Ruiz Dorador 
 ### **Goal**  
 Create a RESTful back-end application using **Java 17**, **JDBC**, and **Javalin**, where users must **log in** to access protected endpoints. Certain endpoints are restricted to **manager** users (with additional permissions: approving or rejecting loans). You will test all endpoints via Postman (or a similar tool)—there is no dedicated front-end.
 
@@ -130,3 +130,10 @@ Create a RESTful back-end application using **Java 17**, **JDBC**, and **Javalin
    - Demonstrating registration, login, logout.
    - Loan creation, viewing, editing (for users).
    - Manager actions (view all loans, approve/reject).
+---
+### **Project Zero Desing**
+![UML diagram](./img/ProjectZero_UML.png)
+![Database schema](./img/ProjectZ_Schema.png)
+![Use_Case](./img/Usecase.png)
+
+
