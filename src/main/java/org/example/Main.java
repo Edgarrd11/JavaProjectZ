@@ -1,18 +1,92 @@
 package org.example;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.Statement;
+import io.javalin.Javalin;
+import org.example.controller.UserController;
+import org.example.dao.UserDAO;
+import org.example.service.UserService;
 
+import java.sql.SQLException;
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
     private static final String JDBC_URL = "jdbc:postgresql://localhost:5432/LoanMGMT?currentSchema=public&user=edgarrd11&password=admin";
-    public static void main(String[] args) {
-        //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-        // to see how IntelliJ IDEA suggests fixing it.
-        System.out.printf("Hello and welcome!");
+    // 1) (Optional) DROP TABLES (to reset each time, ensuring a clean state for testing)
+    private static final String DROP_TABLES_SQL = """
+        DROP TABLE IF EXISTS loans CASCADE;
+        DROP TABLE IF EXISTS users CASCADE;
+        """;
 
-        for (int i = 1; i <= 5; i++) {
-            //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-            // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-            System.out.println("i = " + i);
+    // 2) CREATE TABLES
+    private static final String CREATE_TABLES_SQL = """
+            CREATE TABLE users (
+                id SERIAL PRIMARY KEY,
+                name VARCHAR(50) NOT NULL,
+                username VARCHAR(50) UNIQUE NOT NULL,
+                password VARCHAR(255) NOT NULL,
+                role VARCHAR(20) NOT NULL
+            );    
+            CREATE TABLE loans (
+                id SERIAL PRIMARY KEY,
+                user_id INT REFERENCES users(id),
+                amount DECIMAL(10,2) NOT NULL,
+                loan_type VARCHAR(50) NOT NULL,
+                status VARCHAR(20) DEFAULT 'pending',
+                created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            );
+        """;
+
+    // 3) INSERT SAMPLE DATA
+    private static final String INSERT_DATA_SQL = """
+        INSERT INTO users (name, username, password, role)
+            VALUES
+            ('Alice Johnson', 'alicej', 'hashedpassword1', 'admin'),
+            ('Bob Smith', 'bobsmith', 'hashedpassword2', 'user');
+            
+            INSERT INTO loans (user_id, amount, loan_type, status)
+            VALUES
+            (1, 5000.00, 'personal', 'approved'),
+            (2, 12000.00, 'mortgage', 'pending');
+        """;
+
+    public static void main(String[] args) {
+        //Initialize DB
+        resetDatabase(JDBC_URL);
+        //Create DAO, Services, Controllers
+        UserDAO userDAO = new UserDAO(JDBC_URL);
+        UserService userService = new UserService(userDAO);
+        UserController userController = new UserController(userService);
+
+        //Start Javalin app
+        Javalin app = Javalin.create(javalinConfig -> {
+            // If needed, you can configure plugins, CORS, etc. here.
+            // For example: config.plugins.enableCors(cors -> cors.add(anyOriginAllowed));
+        } ).start(7000);
+        //Define routes
+        app.post("/register", userController::register);
+        app.post("/login", userController::login);
+        app.get("/users", userController::getAllUsers);
+
+
+        System.out.println("Server running on http://localhost:7000/");
+
+    }
+    private static void resetDatabase(String jdbcUrl) {
+        runSql(DROP_TABLES_SQL, jdbcUrl);
+        runSql(CREATE_TABLES_SQL, jdbcUrl);
+        runSql(INSERT_DATA_SQL, jdbcUrl);
+    }
+
+    private static void runSql(String sql, String jdbcUrl) {
+        try (Connection conn = DriverManager.getConnection(jdbcUrl);
+             Statement stmt = conn.createStatement()) {
+
+            stmt.execute(sql);
+            System.out.println("Executed SQL:\n" + sql);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 }
