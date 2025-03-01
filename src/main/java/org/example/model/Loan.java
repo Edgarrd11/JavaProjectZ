@@ -10,12 +10,15 @@ public class Loan {
     private String status;
     private Date created_date;
 
-    public Loan(int id, int user_id, double amount, String loan_type, String status, Date created_date) {
+    public Loan() {
+
+    }
+    public Loan(int id, int user_id, double amount, String loan_type, Date created_date) {
         this.id = id;
         this.user_id = user_id;
         this.amount = amount;
         this.loan_type = loan_type;
-        this.status = status;
+        this.status = "PENDING";
         this.created_date = created_date;
     }
 

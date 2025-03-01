@@ -26,6 +26,7 @@ public class UserService {
 
         return true;
     }
+
     //Login user
     public boolean loginUser(String username, String password) {
         User existingUser = userDAO.getUserByUsername(username);

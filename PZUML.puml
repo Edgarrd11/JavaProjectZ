@@ -1,80 +1,127 @@
 @startuml
+' Define classes for Models
 class User {
-    -int id
-    -String username
-    -String password
-    -String role
-
-    +int getId()
-    +void setId(int id)
-    +String getUsername()
-    +void setUsername(String username)
-    +String getPassword()
-    +void setPassword(String password)
-    +String getRole()
-    +void setRole(String role)
-
-    +void register()
-    +void login()
-    +void logout()
-    +void updateProfile()
+    - int id
+    - String username
+    - String password
+    - String role
+    + User()
+    + User(id: int, username: String, password: String, role: String)
+    + getters/setters()
 }
 
 class Loan {
-    -int id
-    -int user_id
-    -double amount
-    -String loan_type
-    -String status
-    -Date created_at
-
-    +int getId()
-    +void setId(int id)
-    +int getUserId()
-    +void setUserId(int user_id)
-    +double getAmount()
-    +void setAmount(double amount)
-    +String getLoanType()
-    +void setLoanType(String loan_type)
-    +String getStatus()
-    +void setStatus(String status)
-    +Date getCreatedAt()
-    +void setCreatedAt(Date created_at)
-
-    +void createLoan()
-    +void updateLoan()
-    +void approveLoan()
-    +void rejectLoan()
+    - int id
+    - int userId
+    - double amountRequested
+    - String loanType
+    - String status
+    + Loan()
+    + Loan(id: int, userId: int, amountRequested: double, loanType: String, status: String)
+    + getters/setters()
 }
 
+' Define classes for DTOs
+class UserDTO {
+    - String username
+    - String password
+    - String role
+    + UserDTO()
+    + UserDTO(username: String, password: String, role: String)
+    + getters/setters()
+}
+
+class LoanDTO {
+    - double amountRequested
+    - String loanType
+    + LoanDTO()
+    + LoanDTO(amountRequested: double, loanType: String)
+    + getters/setters()
+}
+
+' Define classes for Controllers
 class AuthController {
-    +void register()
-    +void login()
-    +void logout()
+    - AuthService authService
+    + AuthController(authService: AuthService)
+    + register(ctx: Context): void
+    + login(ctx: Context): void
+    + logout(ctx: Context): void
 }
 
 class UserController {
-    +void getUserProfile()
-    +void updateUserProfile()
+    - UserService userService
+    + UserController(userService: UserService)
+    + getUser(ctx: Context): void
+    + updateUser(ctx: Context): void
 }
 
 class LoanController {
-    +void createLoan()
-    +void getLoans()
-    +void approveLoan()
-    +void rejectLoan()
+    - LoanService loanService
+    + LoanController(loanService: LoanService)
+    + createLoan(ctx: Context): void
+    + getLoans(ctx: Context): void
+    + approveLoan(ctx: Context): void
+    + rejectLoan(ctx: Context): void
 }
 
-class Database {
-    +void connect()
-    +void query()
+' Define classes for Services
+class AuthService {
+    - UserDAO userDAO
+    + AuthService(userDAO: UserDAO)
+    + register(user: User): void
+    + login(username: String, password: String): void
+    + logout(): void
 }
 
-' Relationships with cardinality
-User "1" -- "*" Loan : has > (1:M Association)
-AuthController --> User : manages (1:1 Dependency)
-UserController --> User : manages (1:1 Dependency)
-LoanController --> Loan : manages (1:1 Dependency)
-Database --> User : stores (1:M Dependency)
-Database --> Loan : stores (1:M Dependency)
+class UserService {
+    - UserDAO userDAO
+    + UserService(userDAO: UserDAO)
+    + getUser(id: int): User
+    + updateUser(user: User): void
+}
+
+class LoanService {
+    - LoanDAO loanDAO
+    + LoanService(loanDAO: LoanDAO)
+    + createLoan(loan: Loan): Loan
+    + getLoans(userId: int, isManager: boolean): List<Loan>
+    + approveLoan(loanId: int): void
+    + rejectLoan(loanId: int): void
+}
+
+' Define classes for DAOs
+class UserDAO {
+    + getUserById(id: int): User
+    + getUserByUsername(username: String): User
+    + createUser(user: User): void
+    + updateUser(user: User): void
+}
+
+class LoanDAO {
+    + createLoan(loan: Loan): Loan
+    + getLoansByUserId(userId: int): List<Loan>
+    + getAllLoans(): List<Loan>
+    + updateLoanStatus(loanId: int, status: String): void
+}
+
+' Define relationships
+AuthController --> AuthService : uses
+UserController --> UserService : uses
+LoanController --> LoanService : uses
+
+AuthService --> UserDAO : uses
+UserService --> UserDAO : uses
+LoanService --> LoanDAO : uses
+
+AuthService --> User : uses
+UserService --> User : uses
+LoanService --> Loan : uses
+
+UserDAO --> User : interacts with
+LoanDAO --> Loan : interacts with
+
+AuthController --> UserDTO : uses
+UserController --> UserDTO : uses
+LoanController --> LoanDTO : uses
+
 @enduml
