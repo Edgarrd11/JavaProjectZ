@@ -3,7 +3,9 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
 import io.javalin.Javalin;
+import org.example.controller.LoanController;
 import org.example.controller.UserController;
+import org.example.controller.AuthController;
 import org.example.dao.UserDAO;
 import org.example.service.UserService;
 
@@ -57,6 +59,8 @@ public class Main {
         UserDAO userDAO = new UserDAO(JDBC_URL);
         UserService userService = new UserService(userDAO);
         UserController userController = new UserController(userService);
+        AuthController authController = new AuthController();
+        LoanController loanController = new LoanController();
 
         //Start Javalin app
         Javalin app = Javalin.create(javalinConfig -> {
@@ -64,9 +68,19 @@ public class Main {
             // For example: config.plugins.enableCors(cors -> cors.add(anyOriginAllowed));
         } ).start(7000);
         //Define routes
-        app.post("/register", userController::register);
-        app.post("/login", userController::login);
-        app.get("/users", userController::getAllUsers);
+        app.post("/auth/register", authController::register);
+        app.post("/auth/login", authController::login);
+        app.post("/auth/logout", authController::logout);
+
+        app.get("/users/{id}", userController::getUserById);
+        app.put("/users/{id}", userController::updateUserById);
+
+        app.post("/loans", loanController::createLoan);
+        app.get("/loans",loanController::getAllLoans);
+        app.get("/loans/{loanId}",loanController::getLoanById);
+        app.put("/loans/{loanId}",loanController::updateLoanById);
+        app.put("/loans/{loanId}/approve",loanController::approveLoan);
+        app.put("/loans/{loanId}/reject",loanController::rejectLoan);
 
 
         System.out.println("Server running on http://localhost:7000/");

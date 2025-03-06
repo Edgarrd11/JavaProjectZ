@@ -8,14 +8,13 @@ import org.example.model.User;
 // Interact with the database, here we manage our CRUD operations and encapsuling SQL logic
 public class LoanDAO {
     private final String url;
-
     public LoanDAO(String url) {
         this.url = url;
     }
+
     // Create
     public Loan createLoan(Loan loan) {
         String sql_query = "INSERT INTO loans (username, password_hash) VALUES (?, ?)";// Ajusta la query antes de probar
-
         return loan;
     }
     // RETRIEVE a user by username (for login)

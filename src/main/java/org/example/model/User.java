@@ -1,4 +1,6 @@
 package org.example.model;
+import org.mindrot.jbcrypt.BCrypt;
+
 
 //Map User to your database tables.
 public class User {
@@ -15,7 +17,7 @@ public class User {
         this.id = id;
         this.name = name;
         this.username = username;
-        this.password = password;
+        this.password = password;//PasswordUtil.hashPassword(password);;
         this.role = role;
     }
 
