@@ -20,7 +20,7 @@ public class Main {
     public static void main(String[] args) {
         //Initialize DB
         DatabaseManager databaseManager = new DatabaseManager();
-        databaseManager.resetDatabase();
+        databaseManager.initDatabase();//Make this method persistant in the future, rename as initDatabase();
         //Create DAO, Services, Controllers
         UserDAO userDAO = new UserDAO(JDBC_URL);
         UserService userService = new UserService(userDAO);
@@ -37,9 +37,9 @@ public class Main {
             // For example: config.plugins.enableCors(cors -> cors.add(anyOriginAllowed));
         } ).start(7000);
         // Auth Endpoints
-        app.post("/auth/register", authController::register);
-        app.post("/auth/login", authController::login);
-        app.post("/auth/logout", authController::logout);
+        app.post("/auth/register", authController::register);// Completed :)
+        app.post("/auth/login", authController::login);// Completed :)
+        app.post("/auth/logout", authController::logout);// Completed :)
 
         // User Endpoints
         app.get("/users/{id}", userController::getUserById);
