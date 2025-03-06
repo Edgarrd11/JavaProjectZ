@@ -3,9 +3,10 @@ import io.javalin.http.Context;
 import org.example.service.LoanService;
 
 public class LoanController {
-    //private final LoanService loanService;
-    public LoanController() {
+    private final LoanService loanService;
 
+    public LoanController(LoanService loanService) {
+        this.loanService = loanService;
     }
 
     public void createLoan(Context ctx) {

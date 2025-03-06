@@ -1,5 +1,4 @@
 package org.example.service;
-
 import org.mindrot.jbcrypt.BCrypt;
 import org.example.dao.UserDAO;
 import org.example.model.User;
