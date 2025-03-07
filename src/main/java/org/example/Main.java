@@ -17,6 +17,7 @@ import java.sql.SQLException;
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
     private static final String JDBC_URL = "jdbc:postgresql://localhost:5432/LoanMGMT?currentSchema=public&user=edgarrd11&password=admin";
+
     public static void main(String[] args) {
         //Initialize DB
         DatabaseManager databaseManager = new DatabaseManager();
@@ -53,8 +54,6 @@ public class Main {
         app.put("/loans/{loanId}",loanController::updateLoanById);
         app.put("/loans/{loanId}/approve",loanController::approveLoan);
         app.put("/loans/{loanId}/reject",loanController::rejectLoan);
-
-
         System.out.println("Server running on http://localhost:7000/");
 
     }

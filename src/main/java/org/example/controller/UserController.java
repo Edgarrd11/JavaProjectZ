@@ -27,29 +27,33 @@ public class UserController {
 
     // Handle GET /users/{id}
     public void getUserById(Context ctx) {
-        System.out.println("Se ejecuto el get /users/{id}");
+        System.out.println("Se ejecutó el GET /users/{id}");
         int userId = Integer.parseInt(ctx.pathParam("id"));
-        System.out.println("ID de la petición"+userId);
+        System.out.println("ID de la petición: " + userId);
+
         User userInfoDb = userService.getUserById(userId);
-        System.out.println("Ususario que se entregara: " + userInfoDb.getUsername());
+        System.out.println("Usuario que se entregará: " + userInfoDb.getUsername());
+
         HttpSession session = ctx.req().getSession();
-        // Extract user info for current session
+
         if (session != null && session.getAttribute("user") != null) {
             User userSession = (User) session.getAttribute("user");
-            System.out.println("Usuario de la sesion actual: " + userSession);
-            //Check User role
-            if(userSession.getRole() == "admin") {
-                //Retrive user ID info
+            System.out.println("Usuario de la sesión actual: " + userSession.getUsername());
+            System.out.println("Rol de la sesión actual: " + userSession.getRole());
+
+          
+            if (userSession.getRole().equals("admin")) {
                 ctx.status(200).json(userInfoDb);
             } else {
                 ctx.status(200).json(userSession);
             }
 
-
         } else {
             ctx.status(401).json("{\"error\":\"Not logged in\"}");
         }
     }
+
+
     public void getAllUsers(Context ctx) {
         List<User> users = userService.getAllUsers();
         ctx.json(users);
