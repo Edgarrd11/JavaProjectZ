@@ -42,6 +42,7 @@ public class Main {
         app.post("/auth/logout", authController::logout);// Completed :)
 
         // User Endpoints
+        app.get("/users", userController::getAllUsers);
         app.get("/users/{id}", userController::getUserById);
         app.put("/users/{id}", userController::updateUserById);
 

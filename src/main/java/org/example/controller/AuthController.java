@@ -74,7 +74,14 @@ public class AuthController {
         ctx.status(200).json("{\"message\":\"Logged out\"}");
     }
 
-    public void checkLogin(Context ctx) {
+    public static void checkLogin(Context ctx) {
+        HttpSession session = ctx.req().getSession();
+        if (session != null && session.getAttribute("user") != null) {
+            User user = (User) session.getAttribute("user");
+            ctx.status(200).json(user);
+        } else {
+            ctx.status(401).json("{\"error\":\"Not logged in\"}");
+        }
 
     }
 

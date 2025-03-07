@@ -11,28 +11,9 @@ public class UserService {
     public UserService(UserDAO userDAO ) {
         this.userDAO = userDAO;
     }
-    //Register a new user
-    public boolean registerUser(String username, String password) {
-        // Generate the hash
-        String hashed = BCrypt.hashpw(password, BCrypt.gensalt(12));
-        if (userDAO.getUserByUsername(username) != null) {
-            return false; // username exists
-        }
-        User newUser = new User();
-        newUser.setUsername(username);
-        newUser.setPassword(password);
-        userDAO.createUser(newUser);
-
-        return true;
-    }
-
-    //Login user
-    public boolean loginUser(String username, String password) {
-        User existingUser = userDAO.getUserByUsername(username);
-        if (existingUser != null && BCrypt.checkpw(password, existingUser.getPassword())) {
-            return true; // Valid credentials
-        }
-        return false;
+    // Fetch user info with access control
+    public User getUserById(int id) {
+        return userDAO.getUserById(id);
     }
     //Get all users
     public List<User> getAllUsers() {
