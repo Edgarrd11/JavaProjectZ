@@ -1,10 +1,9 @@
 package org.example.controller;
 
 import jakarta.servlet.http.HttpSession;
-import org.example.dto.UserAuthDTO;
+import org.example.dto.UserRequestDTO;
 import org.example.model.User;
 import org.example.service.UserService;
-import io.javalin.http.HttpStatus;
 import io.javalin.http.Context;
 
 import java.util.List;
@@ -22,7 +21,18 @@ public class UserController {
      * Returns JSON of all users
      */
     public void updateUserById(Context ctx) {
+        int userId = Integer.parseInt(ctx.pathParam("id"));
+        UserRequestDTO request = ctx.bodyAsClass(UserRequestDTO.class);
+        // You can add the hashed here
+        User user = new User();
+        user.setId(userId);
+        user.setName(request.getName());
+        user.setUsername(request.getUsername());
+        user.setPassword(request.getPassword());
+        user.setRole(request.getRole());
 
+        userService.updateUser(user);
+        ctx.status(200).json("{\"message\":\"User updated\"}");
     }
 
     // Handle GET /users/{id}

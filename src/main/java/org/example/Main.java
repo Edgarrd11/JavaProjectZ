@@ -43,8 +43,8 @@ public class Main {
         app.post("/auth/logout", authController::logout);// Completed :)
 
         // User Endpoints
-        app.get("/users", userController::getAllUsers);
-        app.get("/users/{id}", userController::getUserById);
+        app.get("/users", userController::getAllUsers);// Completed :)
+        app.get("/users/{id}", userController::getUserById);// Completed :)
         app.put("/users/{id}", userController::updateUserById);
 
         // Loans Endpoints

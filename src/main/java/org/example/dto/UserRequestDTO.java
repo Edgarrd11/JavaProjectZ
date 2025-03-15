@@ -1,10 +1,19 @@
 package org.example.dto;
 
 //DTO for registration/login JSON request
-public class UserAuthDTO {
+public class UserRequestDTO {
+    private String name;
     private String username;
     private String password;
     private String role;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public String getUsername() {
         return username;

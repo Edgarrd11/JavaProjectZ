@@ -5,6 +5,7 @@ import org.example.model.User;
 
 import java.util.List;
 
+// CRUD Actions
 public class UserService {
     private final UserDAO userDAO;
 
@@ -18,6 +19,10 @@ public class UserService {
     //Get all users
     public List<User> getAllUsers() {
         return userDAO.getAllUsers();
+    }
+
+    public void updateUser(User user) {
+        userDAO.updateUser(user);
     }
 
 }

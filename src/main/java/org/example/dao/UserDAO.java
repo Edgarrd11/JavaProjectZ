@@ -58,4 +58,23 @@ public class UserDAO {
         return users;
     }
 
+    // Update a user
+    public void updateUser(User user) {
+        String sql = "UPDATE users SET name = ?, username = ?, password = ?, role = ? WHERE id = ?";
+        // Make the connection to SQL
+        try (Connection conn = DriverManager.getConnection(url);
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            // Update fields
+            stmt.setString(1, user.getName());
+            stmt.setString(2, user.getUsername());
+            stmt.setString(3, user.getPassword());
+            stmt.setString(4, user.getRole());
+            stmt.setInt(5, user.getId());
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 }
