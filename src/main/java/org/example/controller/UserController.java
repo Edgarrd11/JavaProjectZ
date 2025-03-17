@@ -5,6 +5,7 @@ import org.example.dto.UserRequestDTO;
 import org.example.model.User;
 import org.example.service.UserService;
 import io.javalin.http.Context;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -36,7 +37,7 @@ public class UserController {
     }
 
     // Handle GET /users/{id}
-    public void getUserById(Context ctx) {
+    public void getUserById(@NotNull Context ctx) {
         System.out.println("Se ejecutó el GET /users/{id}");
         int userId = Integer.parseInt(ctx.pathParam("id"));
         System.out.println("ID de la petición: " + userId);
@@ -55,6 +56,7 @@ public class UserController {
             if (userSession.getRole().equals("admin")) {
                 ctx.status(200).json(userInfoDb);
             } else {
+                // Create a get by user_id function
                 ctx.status(200).json(userSession);
             }
 

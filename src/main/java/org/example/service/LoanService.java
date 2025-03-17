@@ -4,6 +4,7 @@ import org.example.dao.LoanDAO;
 import org.example.model.Loan;
 import org.mindrot.jbcrypt.BCrypt;
 
+import java.sql.SQLException;
 import java.util.List;
 
 public class LoanService {
@@ -13,24 +14,17 @@ public class LoanService {
         this.loanDAO = loanDAO;
     }
     //Register a new user
-    public boolean registerLoan(String username, String password) {
-        // Generate the hash
-        String hashed = BCrypt.hashpw(password, BCrypt.gensalt(12));
-        if (loanDAO.getLoanById(username) != null) {
-            return false; // username exists
-        }
-        Loan newLoan = new Loan();
-        //newLoan.setUsername(username);
-        //newLoan.setPassword(password);
-        //userLoan.createLoan(newLoan);
-
-        return true;
+    public boolean createLoan(Loan loan) {
+       return loanDAO.createLoan(loan);
     }
 
+    public void updateLoan(Loan loan) { loanDAO.updateLoan(loan);}
     //Get all Loans
     public List<Loan> getAllLoans() {
         return loanDAO.getAllLoans();
     }
+    // Get loan by ID
+    public Loan getLoanById(int id) { return loanDAO.getLoanById(id);}
 
 
 }

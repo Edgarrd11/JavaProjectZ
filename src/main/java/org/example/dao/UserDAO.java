@@ -13,6 +13,7 @@ public class UserDAO {
     public UserDAO(String url) {
         this.url = url;
     }
+
     public User getUserById(int id) {
         String sql = "SELECT * FROM users WHERE id = ?";
         try (Connection conn = DriverManager.getConnection(url);

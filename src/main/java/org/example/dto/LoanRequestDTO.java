@@ -4,7 +4,7 @@ import java.util.Date;
 
 //simplified data structures used to transfer the data from the backend to the client,
 // ensuring that only the necessary data is exposed.
-public class LoanDTO {
+public class LoanRequestDTO {
     private int id;
     private int userId;
     private String status;

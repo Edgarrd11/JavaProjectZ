@@ -21,6 +21,14 @@ public class Loan {
         this.status = "PENDING";
         this.created_date = created_date;
     }
+    public Loan(int id, int user_id, double amount, String loan_type, String status,Date created_date) {
+        this.id = id;
+        this.user_id = user_id;
+        this.amount = amount;
+        this.loan_type = loan_type;
+        this.status = status;
+        this.created_date = created_date;
+    }
 
     //Getters and setters
     public int getId() {
@@ -58,6 +66,9 @@ public class Loan {
     public String getStatus() {
         return status;
     }
+
+    public void approved() { this.status="APPROVED";}
+    public void rejected() { this.status="REJECTED";}
 
     public void setStatus(String status) {
         this.status = status;

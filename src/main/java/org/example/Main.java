@@ -32,29 +32,39 @@ public class Main {
         LoanController loanController = new LoanController(loanService);
 
         AuthController authController = new AuthController();
+
+
         //Start Javalin app
         Javalin app = Javalin.create(javalinConfig -> {
             // If needed, you can configure plugins, CORS, etc. here.
             // For example: config.plugins.enableCors(cors -> cors.add(anyOriginAllowed));
-        } ).start(7000);
-        // Auth Endpoints
-        app.post("/auth/register", authController::register);// Completed :)
-        app.post("/auth/login", authController::login);// Completed :)
-        app.post("/auth/logout", authController::logout);// Completed :)
+            } ).start(7000);
+            // Auth Endpoints
+            app.post("/auth/register", authController::register);// Completed :) <- Needs to implement hashing
+            app.post("/auth/login", authController::login);// Completed :)
+            app.post("/auth/logout", authController::logout);// Completed :)
 
-        // User Endpoints
-        app.get("/users", userController::getAllUsers);// Completed :)
-        app.get("/users/{id}", userController::getUserById);// Completed :)
-        app.put("/users/{id}", userController::updateUserById);
+            // User Endpoints
+            app.get("/users", userController::getAllUsers);// Completed :)
+            app.get("/users/{id}", userController::getUserById);// Completed :)
+            app.put("/users/{id}", userController::updateUserById);// Completed :) <- Needs to implement hashing (oly admin can every user)
 
-        // Loans Endpoints
-        app.post("/loans", loanController::createLoan);
-        app.get("/loans",loanController::getAllLoans);
-        app.get("/loans/{loanId}",loanController::getLoanById);
-        app.put("/loans/{loanId}",loanController::updateLoanById);
-        app.put("/loans/{loanId}/approve",loanController::approveLoan);
-        app.put("/loans/{loanId}/reject",loanController::rejectLoan);
-        System.out.println("Server running on http://localhost:7000/");
+            // Loans Endpoints
+            app.get("/loans",loanController::getAllLoans);// Completed :) <- Needs to implement the user logic
+            app.post("/loans", loanController::createLoan);// Completed :) <- Only users can create a loan
+            app.get("/loans/{loanId}",loanController::getLoanById);// Completed :) <- Only users can create a loan
+            app.put("/loans/{loanId}",loanController::updateLoanById);//Completed :) <- Only users can create a loan
+            app.put("/loans/{loanId}/approve",loanController::approveLoan);//Completed :) <- Only Admin can approve
+            app.put("/loans/{loanId}/reject",loanController::rejectLoan);//Completed :) <- Only Admin can reject
 
+        /*
+        *   Implements list:
+        *   - Hashing
+        *   - Login with Logback
+        *   - Unite testing
+        *   - Persistence in the database
+        *
+        * */
+             System.out.println("Server running on http://localhost:7000/");
     }
 }

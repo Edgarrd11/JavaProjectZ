@@ -28,7 +28,7 @@ public class DatabaseManager {
                 user_id INT REFERENCES users(id),
                 amount DECIMAL(10,2) NOT NULL,
                 loan_type VARCHAR(50) NOT NULL,
-                status VARCHAR(20) DEFAULT 'pending',
+                status VARCHAR(20),
                 created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             );
         """;
@@ -42,8 +42,8 @@ public class DatabaseManager {
             
             INSERT INTO loans (user_id, amount, loan_type, status)
             VALUES
-            (1, 5000.00, 'personal', 'approved'),
-            (2, 12000.00, 'mortgage', 'pending');
+            (1, 5000.00, 'personal', 'PENDING'),
+            (2, 12000.00, 'mortgage', 'PENDING');
         """;
 
 
