@@ -69,14 +69,14 @@ public class DatabaseManager {
         // Query
         String sql = "INSERT INTO users (name, username, password, role) VALUES (?, ?, ?, ?)";
         // Hashing the password
-        //String hashedPassword = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt());
+        String hashedPassword = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt());
 
         // Sending the query to DB
         try (Connection conn = DriverManager.getConnection(JDBC_URL);
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, user.getName());
             stmt.setString(2, user.getUsername());
-            stmt.setString(3, user.getPassword()); // Use the hashed password
+            stmt.setString(3, hashedPassword); // Use the hashed password
             stmt.setString(4, user.getRole());
             int rows = stmt.executeUpdate();
             System.out.println("User created succesfuly!");

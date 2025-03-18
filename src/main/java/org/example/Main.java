@@ -59,10 +59,6 @@ public class Main {
 
         /*
         *   Implements list:
-        *   - Hashing
-        *   - Login with Logback
-        *   - Unite testing
-        *   - Persistence in the database
         *
         * */
              System.out.println("Server running on http://localhost:7000/");
